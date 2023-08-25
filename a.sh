@@ -1,7 +1,6 @@
-COOKIE="dbackup3.session=05b02f04ffe9ea5e55c052aa6e2edf9efb72cb51204b5a63a8ebd69d32ca8759"
-TOKEN="ea36e2ab37a8d95773924313829da1e1"
+APIKEY="a360f1fc1e7cc76bc2d9c3156a40b599"
 JOBUUID="52f1065c3b1a11ee800000505692225b"
-string=$(curl --cookie "$COOKIE" -H "Content-Type:application/json" -H "X-CSRF-Token:$TOKEN" "http://192.168.3.118/d2/r/v2/jobs?uuid=$JOBUUID")
+string=$(curl -H "Content-Type:application/json" -H "X-API-Key:$APIKEY" "http://192.168.3.118/d2/r/v2/jobs?uuid=$JOBUUID")
 tp1=${string#*state}
 tp2=${tp1:3}
 aStatus=$(echo ${tp2} | awk -F '"' '{print $1}')
@@ -14,7 +13,7 @@ case $aStatus in
 	"running" | "starting")
 		echo "running or starting"
 		while true; do
-			string=$(curl --cookie "$COOKIE" -H "Content-Type:application/json" -H "X-CSRF-Token:$TOKEN" "http://192.168.3.118/d2/r/v2/jobs?uuid=$JOBUUID")
+			string=$(curl -H "Content-Type:application/json" -H "X-API-Key:$APIKEY" "http://192.168.3.118/d2/r/v2/jobs?uuid=$JOBUUID")
 			tp1=${string#*state}
 			tp2=${tp1:3}
 			aStatus2=$(echo ${tp2} | awk -F '"' '{print $1}')
