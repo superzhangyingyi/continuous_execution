@@ -5,9 +5,11 @@ string=$(curl --cookie "$COOKIE" -H "Content-Type:application/json" -H "X-CSRF-T
 tp1=${string#*state}
 tp2=${tp1:3}
 aStatus=$(echo ${tp2} | awk -F '"' '{print $1}')
+echo "$aStatus"
 case $aStatus in
 	"completed")
 		echo "canrun b"
+		exit 0
 		;;
 	"running" | "starting")
 		echo "running or starting"
@@ -25,6 +27,7 @@ case $aStatus in
 		done
 		if [ $aStatus2 == "completed" ] || [ $aStatus2 == "idle" ]; then
 			echo "can run b now"
+			exit 0
 		else
 			echo "${aStatus2} cannot run"
 			exit 1
